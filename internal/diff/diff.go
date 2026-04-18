@@ -55,3 +55,13 @@ func Summary(changes []Change) map[ChangeType]int {
 	}
 	return summary
 }
+
+// HasChanges returns true if any change in the list is not Unchanged.
+func HasChanges(changes []Change) bool {
+	for _, c := range changes {
+		if c.Type != Unchanged {
+			return true
+		}
+	}
+	return false
+}
