@@ -42,7 +42,10 @@ func (l *Logger) Log(e Entry) error {
 		return fmt.Errorf("audit: marshal: %w", err)
 	}
 	_, err = fmt.Fprintf(l.w, "%s\n", b)
-	return err
+	if err != nil {
+		return fmt.Errorf("audit: write: %w", err)
+	}
+	return nil
 }
 
 // Success logs a successful sync event.
