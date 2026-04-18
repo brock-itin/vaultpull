@@ -49,6 +49,13 @@ func TestCompare_Unchanged(t *testing.T) {
 	}
 }
 
+func TestCompare_Empty(t *testing.T) {
+	changes := diff.Compare(map[string]string{}, map[string]string{})
+	if len(changes) != 0 {
+		t.Fatalf("expected no changes for two empty maps, got %+v", changes)
+	}
+}
+
 func TestSummary(t *testing.T) {
 	changes := []diff.Change{
 		{Type: diff.Added},
@@ -59,5 +66,12 @@ func TestSummary(t *testing.T) {
 	s := diff.Summary(changes)
 	if s[diff.Added] != 2 || s[diff.Updated] != 1 || s[diff.Deleted] != 1 {
 		t.Fatalf("unexpected summary: %+v", s)
+	}
+}
+
+func TestSummary_Empty(t *testing.T) {
+	s := diff.Summary([]diff.Change{})
+	if len(s) != 0 {
+		t.Fatalf("expected empty summary for no changes, got %+v", s)
 	}
 }
