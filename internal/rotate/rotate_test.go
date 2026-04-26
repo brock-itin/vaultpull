@@ -50,6 +50,17 @@ func TestCheck_Mixed(t *testing.T) {
 	}
 }
 
+// TestCheck_ExactlyAtMaxAge verifies that an entry aged exactly at MaxAge is
+// considered stale (boundary condition: age >= MaxAge).
+func TestCheck_ExactlyAtMaxAge(t *testing.T) {
+	entries := []rotate.Entry{makeEntry("BOUNDARY", 24)}
+	policy := rotate.Policy{MaxAge: 24 * time.Hour}
+	results := rotate.Check(entries, policy, baseTime)
+	if !results[0].Stale {
+		t.Error("entry at exactly MaxAge should be stale")
+	}
+}
+
 func TestStaleKeys(t *testing.T) {
 	results := []rotate.Result{
 		{Key: "A", Stale: false},
